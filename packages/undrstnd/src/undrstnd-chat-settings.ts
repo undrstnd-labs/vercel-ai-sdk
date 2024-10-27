@@ -1,4 +1,5 @@
 // https://docs.undrstnd-labs.com/getting-started/models/models_overview/
+// TODO: Update models to match those with Undrstnd Labs
 export type UndrstndChatModelId =
   // premier
   | 'ministral-3b-latest'
