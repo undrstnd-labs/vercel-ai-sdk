@@ -3,7 +3,7 @@ import {
   UnsupportedFunctionalityError,
 } from '@ai-sdk/provider';
 import { convertUint8ArrayToBase64 } from '@ai-sdk/provider-utils';
-import { UndrstndPrompt } from './mistral-chat-prompt';
+import { UndrstndPrompt } from './undrstnd-chat-prompt';
 
 export function convertToUndrstndChatMessages(
   prompt: LanguageModelV1Prompt,

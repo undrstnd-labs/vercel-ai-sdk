@@ -13,15 +13,15 @@ import {
   postJsonToApi,
 } from '@ai-sdk/provider-utils';
 import { z } from 'zod';
-import { convertToUndrstndChatMessages } from './convert-to-mistral-chat-messages';
-import { mapUndrstndFinishReason } from './map-mistral-finish-reason';
+import { convertToUndrstndChatMessages } from './convert-to-undrstnd-chat-messages';
+import { mapUndrstndFinishReason } from './map-undrstnd-finish-reason';
 import {
   UndrstndChatModelId,
   UndrstndChatSettings,
-} from './mistral-chat-settings';
-import { mistralFailedResponseHandler } from './mistral-error';
+} from './undrstnd-chat-settings';
+import { mistralFailedResponseHandler } from './undrstnd-error';
 import { getResponseMetadata } from './get-response-metadata';
-import { prepareTools } from './mistral-prepare-tools';
+import { prepareTools } from './undrstnd-prepare-tools';
 
 type UndrstndChatConfig = {
   provider: string;
@@ -191,7 +191,7 @@ export class UndrstndChatLanguageModel implements LanguageModelV1 {
     const choice = response.choices[0];
     let text = choice.message.content ?? undefined;
 
-    // when there is a trailing assistant message, mistral will send the
+    // when there is a trailing assistant message, undrstnd will send the
     // content of that message again. we skip this repeated content to
     // avoid duplication, e.g. in continuation mode.
     const lastMessage = rawPrompt[rawPrompt.length - 1];
@@ -294,7 +294,7 @@ export class UndrstndChatLanguageModel implements LanguageModelV1 {
 
             const delta = choice.delta;
 
-            // when there is a trailing assistant message, mistral will send the
+            // when there is a trailing assistant message, undrstnd will send the
             // content of that message again. we skip this repeated content to
             // avoid duplication, e.g. in continuation mode.
             if (chunkNumber <= 2) {
@@ -328,7 +328,7 @@ export class UndrstndChatLanguageModel implements LanguageModelV1 {
 
             if (delta.tool_calls != null) {
               for (const toolCall of delta.tool_calls) {
-                // mistral tool calls come in one piece:
+                // undrstnd tool calls come in one piece:
                 controller.enqueue({
                   type: 'tool-call-delta',
                   toolCallType: 'function',

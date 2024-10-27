@@ -1,9 +1,9 @@
 import { loadApiKey, withoutTrailingSlash } from '@ai-sdk/provider-utils';
-import { UndrstndChatLanguageModel } from './mistral-chat-language-model';
+import { UndrstndChatLanguageModel } from './undrstnd-chat-language-model';
 import {
   UndrstndChatModelId,
   UndrstndChatSettings,
-} from './mistral-chat-settings';
+} from './undrstnd-chat-settings';
 import { UndrstndProviderSettings } from './undrstnd-provider';
 
 /**

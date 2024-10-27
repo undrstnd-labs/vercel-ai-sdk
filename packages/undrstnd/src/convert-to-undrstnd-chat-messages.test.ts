@@ -1,4 +1,4 @@
-import { convertToUndrstndChatMessages } from './convert-to-mistral-chat-messages';
+import { convertToUndrstndChatMessages } from './convert-to-undrstnd-chat-messages';
 
 describe('user messages', () => {
   it('should convert messages with image parts', async () => {

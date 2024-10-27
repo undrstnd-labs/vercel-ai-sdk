@@ -1,4 +1,4 @@
-export * from './mistral-facade';
+export * from './undrstnd-facade';
 export { createUndrstnd, undrstnd } from './undrstnd-provider';
 export type {
   UndrstndProvider,
