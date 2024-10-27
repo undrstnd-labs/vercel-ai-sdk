@@ -99,7 +99,7 @@ export function createMistral(
   ) {
     if (new.target) {
       throw new Error(
-        'The Mistral model function cannot be called with the new keyword.',
+        'The Mistral  model function cannot be called with the new keyword.',
       );
     }
 
