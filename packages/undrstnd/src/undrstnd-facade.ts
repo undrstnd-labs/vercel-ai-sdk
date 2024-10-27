@@ -25,7 +25,7 @@ export class Undrstnd {
   constructor(options: UndrstndProviderSettings = {}) {
     this.baseURL =
       withoutTrailingSlash(options.baseURL ?? options.baseUrl) ??
-      'https://api.mistral.ai/v1';
+      'https://api.undrstnd-labs.com/v1';
 
     this.apiKey = options.apiKey;
     this.headers = options.headers;
@@ -47,7 +47,7 @@ export class Undrstnd {
 
   chat(modelId: UndrstndChatModelId, settings: UndrstndChatSettings = {}) {
     return new UndrstndChatLanguageModel(modelId, settings, {
-      provider: 'mistral.chat',
+      provider: 'undrstnd.chat',
       ...this.baseConfig,
     });
   }

@@ -1,7 +1,7 @@
 import { createJsonErrorResponseHandler } from '@ai-sdk/provider-utils';
 import { z } from 'zod';
 
-const mistralErrorDataSchema = z.object({
+const undrstndErrorDataSchema = z.object({
   object: z.literal('error'),
   message: z.string(),
   type: z.string(),
@@ -9,9 +9,9 @@ const mistralErrorDataSchema = z.object({
   code: z.string().nullable(),
 });
 
-export type UndrstndErrorData = z.infer<typeof mistralErrorDataSchema>;
+export type UndrstndErrorData = z.infer<typeof undrstndErrorDataSchema>;
 
-export const mistralFailedResponseHandler = createJsonErrorResponseHandler({
-  errorSchema: mistralErrorDataSchema,
+export const undrstndFailedResponseHandler = createJsonErrorResponseHandler({
+  errorSchema: undrstndErrorDataSchema,
   errorToMessage: data => data.message,
 });

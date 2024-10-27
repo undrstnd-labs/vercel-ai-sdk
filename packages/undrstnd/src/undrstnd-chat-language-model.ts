@@ -19,7 +19,7 @@ import {
   UndrstndChatModelId,
   UndrstndChatSettings,
 } from './undrstnd-chat-settings';
-import { mistralFailedResponseHandler } from './undrstnd-error';
+import { undrstndFailedResponseHandler } from './undrstnd-error';
 import { getResponseMetadata } from './get-response-metadata';
 import { prepareTools } from './undrstnd-prepare-tools';
 
@@ -179,9 +179,9 @@ export class UndrstndChatLanguageModel implements LanguageModelV1 {
       url: `${this.config.baseURL}/chat/completions`,
       headers: combineHeaders(this.config.headers(), options.headers),
       body: args,
-      failedResponseHandler: mistralFailedResponseHandler,
+      failedResponseHandler: undrstndFailedResponseHandler,
       successfulResponseHandler: createJsonResponseHandler(
-        mistralChatResponseSchema,
+        undrstndChatResponseSchema,
       ),
       abortSignal: options.abortSignal,
       fetch: this.config.fetch,
@@ -234,9 +234,9 @@ export class UndrstndChatLanguageModel implements LanguageModelV1 {
       url: `${this.config.baseURL}/chat/completions`,
       headers: combineHeaders(this.config.headers(), options.headers),
       body,
-      failedResponseHandler: mistralFailedResponseHandler,
+      failedResponseHandler: undrstndFailedResponseHandler,
       successfulResponseHandler: createEventSourceResponseHandler(
-        mistralChatChunkSchema,
+        undrstndChatChunkSchema,
       ),
       abortSignal: options.abortSignal,
       fetch: this.config.fetch,
@@ -255,7 +255,7 @@ export class UndrstndChatLanguageModel implements LanguageModelV1 {
     return {
       stream: response.pipeThrough(
         new TransformStream<
-          ParseResult<z.infer<typeof mistralChatChunkSchema>>,
+          ParseResult<z.infer<typeof undrstndChatChunkSchema>>,
           LanguageModelV1StreamPart
         >({
           transform(chunk, controller) {
@@ -362,7 +362,7 @@ export class UndrstndChatLanguageModel implements LanguageModelV1 {
 
 // limited version of the schema, focussed on what is needed for the implementation
 // this approach limits breakages when the API changes and increases efficiency
-const mistralChatResponseSchema = z.object({
+const undrstndChatResponseSchema = z.object({
   id: z.string().nullish(),
   created: z.number().nullish(),
   model: z.string().nullish(),
@@ -393,7 +393,7 @@ const mistralChatResponseSchema = z.object({
 
 // limited version of the schema, focussed on what is needed for the implementation
 // this approach limits breakages when the API changes and increases efficiency
-const mistralChatChunkSchema = z.object({
+const undrstndChatChunkSchema = z.object({
   id: z.string().nullish(),
   created: z.number().nullish(),
   model: z.string().nullish(),

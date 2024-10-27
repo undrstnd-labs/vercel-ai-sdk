@@ -11,11 +11,11 @@ const TEST_PROMPT: LanguageModelV1Prompt = [
 ];
 
 const provider = createUndrstnd({ apiKey: 'test-api-key' });
-const model = provider.chat('mistral-small-latest');
+const model = provider.chat('llama3-8b-8192');
 
 describe('doGenerate', () => {
   const server = new JsonTestServer(
-    'https://api.mistral.ai/v1/chat/completions',
+    'https://api.undrstnd-labs.com/v1/chat/completions',
   );
 
   server.setupTestEnvironment();
@@ -29,7 +29,7 @@ describe('doGenerate', () => {
     },
     id = '16362f24e60340d0994dd205c267a43a',
     created = 1711113008,
-    model = 'mistral-small-latest',
+    model = 'llama3-8b-8192',
   }: {
     content?: string;
     usage?: {
@@ -97,7 +97,7 @@ describe('doGenerate', () => {
       id: 'b3999b8c93e04e11bcbff7bcab829667',
       object: 'chat.completion',
       created: 1722349660,
-      model: 'mistral-large-latest',
+      model: 'llama3-70b-8192',
       choices: [
         {
           index: 0,
@@ -208,7 +208,7 @@ describe('doGenerate', () => {
     });
 
     expect(await server.getRequestBodyJson()).toStrictEqual({
-      model: 'mistral-small-latest',
+      model: 'llama3-8b-8192',
       messages: [{ role: 'user', content: [{ type: 'text', text: 'Hello' }] }],
     });
   });
@@ -242,7 +242,7 @@ describe('doGenerate', () => {
     });
 
     expect(await server.getRequestBodyJson()).toStrictEqual({
-      model: 'mistral-small-latest',
+      model: 'llama3-8b-8192',
       messages: [{ role: 'user', content: [{ type: 'text', text: 'Hello' }] }],
       tools: [
         {
@@ -273,7 +273,7 @@ describe('doGenerate', () => {
       },
     });
 
-    await provider.chat('mistral-small-latest').doGenerate({
+    await provider.chat('llama3-8b-8192').doGenerate({
       inputFormat: 'prompt',
       mode: { type: 'regular' },
       prompt: TEST_PROMPT,
@@ -302,14 +302,14 @@ describe('doGenerate', () => {
     });
 
     expect(request).toStrictEqual({
-      body: '{"model":"mistral-small-latest","messages":[{"role":"user","content":[{"type":"text","text":"Hello"}]}]}',
+      body: '{"model":"llama3-8b-8192","messages":[{"role":"user","content":[{"type":"text","text":"Hello"}]}]}',
     });
   });
 });
 
 describe('doStream', () => {
   const server = new StreamingTestServer(
-    'https://api.mistral.ai/v1/chat/completions',
+    'https://api.undrstnd-labs.com/v1/chat/completions',
   );
 
   server.setupTestEnvironment();
@@ -317,17 +317,17 @@ describe('doStream', () => {
   function prepareStreamResponse({ content }: { content: string[] }) {
     server.responseChunks = [
       `data:  {"id":"6e2cd91750904b7092f49bdca9083de1","object":"chat.completion.chunk",` +
-        `"created":1711097175,"model":"mistral-small-latest","choices":[{"index":0,` +
+        `"created":1711097175,"model":"llama3-8b-8192","choices":[{"index":0,` +
         `"delta":{"role":"assistant","content":""},"finish_reason":null,"logprobs":null}]}\n\n`,
       ...content.map(text => {
         return (
           `data:  {"id":"6e2cd91750904b7092f49bdca9083de1","object":"chat.completion.chunk",` +
-          `"created":1711097175,"model":"mistral-small-latest","choices":[{"index":0,` +
+          `"created":1711097175,"model":"llama3-8b-8192","choices":[{"index":0,` +
           `"delta":{"role":"assistant","content":"${text}"},"finish_reason":null,"logprobs":null}]}\n\n`
         );
       }),
       `data:  {"id":"6e2cd91750904b7092f49bdca9083de1","object":"chat.completion.chunk",` +
-        `"created":1711097175,"model":"mistral-small-latest","choices":[{"index":0,` +
+        `"created":1711097175,"model":"llama3-8b-8192","choices":[{"index":0,` +
         `"delta":{"content":""},"finish_reason":"stop","logprobs":null}],` +
         `"usage":{"prompt_tokens":4,"total_tokens":36,"completion_tokens":32}}\n\n`,
       `data: [DONE]\n\n`,
@@ -348,7 +348,7 @@ describe('doStream', () => {
         type: 'response-metadata',
         id: '6e2cd91750904b7092f49bdca9083de1',
         timestamp: new Date(1711097175 * 1000),
-        modelId: 'mistral-small-latest',
+        modelId: 'llama3-8b-8192',
       },
       { type: 'text-delta', textDelta: '' },
       { type: 'text-delta', textDelta: 'Hello' },
@@ -383,7 +383,7 @@ describe('doStream', () => {
         type: 'response-metadata',
         id: '6e2cd91750904b7092f49bdca9083de1',
         timestamp: new Date(1711097175 * 1000),
-        modelId: 'mistral-small-latest',
+        modelId: 'llama3-8b-8192',
       },
       { type: 'text-delta', textDelta: '' },
       { type: 'text-delta', textDelta: 'and' },
@@ -399,9 +399,9 @@ describe('doStream', () => {
 
   it('should stream tool deltas', async () => {
     server.responseChunks = [
-      `data: {"id":"ad6f7ce6543c4d0890280ae184fe4dd8","object":"chat.completion.chunk","created":1711365023,"model":"mistral-large-latest",` +
+      `data: {"id":"ad6f7ce6543c4d0890280ae184fe4dd8","object":"chat.completion.chunk","created":1711365023,"model":"llama3-70b-8192",` +
         `"choices":[{"index":0,"delta":{"role":"assistant","content":""},"finish_reason":null,"logprobs":null}]}\n\n`,
-      `data: {"id":"ad6f7ce6543c4d0890280ae184fe4dd8","object":"chat.completion.chunk","created":1711365023,"model":"mistral-large-latest",` +
+      `data: {"id":"ad6f7ce6543c4d0890280ae184fe4dd8","object":"chat.completion.chunk","created":1711365023,"model":"llama3-70b-8192",` +
         `"choices":[{"index":0,"delta":{"content":null,"tool_calls":[{"id":"yfBEybNYi","function":{"name":"test-tool","arguments":` +
         `"{\\"value\\":\\"Sparkle Day\\"}"` +
         `}}]},"finish_reason":"tool_calls","logprobs":null}],"usage":{"prompt_tokens":183,"total_tokens":316,"completion_tokens":133}}\n\n`,
@@ -411,7 +411,7 @@ describe('doStream', () => {
     const { stream } = await createUndrstnd({
       apiKey: 'test-api-key',
     })
-      .chat('mistral-large-latest')
+      .chat('llama3-70b-8192')
       .doStream({
         inputFormat: 'prompt',
         mode: {
@@ -438,7 +438,7 @@ describe('doStream', () => {
         type: 'response-metadata',
         id: 'ad6f7ce6543c4d0890280ae184fe4dd8',
         timestamp: new Date(1711365023 * 1000),
-        modelId: 'mistral-large-latest',
+        modelId: 'llama3-70b-8192',
       },
       { type: 'text-delta', textDelta: '' },
       {
@@ -498,7 +498,7 @@ describe('doStream', () => {
 
     expect(await server.getRequestBodyJson()).toStrictEqual({
       stream: true,
-      model: 'mistral-small-latest',
+      model: 'llama3-8b-8192',
       messages: [{ role: 'user', content: [{ type: 'text', text: 'Hello' }] }],
     });
   });
@@ -513,7 +513,7 @@ describe('doStream', () => {
       },
     });
 
-    await provider.chat('mistral-small-latest').doStream({
+    await provider.chat('llama3-8b-8192').doStream({
       inputFormat: 'prompt',
       mode: { type: 'regular' },
       prompt: TEST_PROMPT,
@@ -542,7 +542,7 @@ describe('doStream', () => {
     });
 
     expect(request).toStrictEqual({
-      body: '{"model":"mistral-small-latest","messages":[{"role":"user","content":[{"type":"text","text":"Hello"}]}],"stream":true}',
+      body: '{"model":"llama3-8b-8192","messages":[{"role":"user","content":[{"type":"text","text":"Hello"}]}],"stream":true}',
     });
   });
 });
