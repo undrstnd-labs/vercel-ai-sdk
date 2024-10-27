@@ -1,5 +1,5 @@
 // https://docs.mistral.ai/getting-started/models/models_overview/
-export type MistralChatModelId =
+export type UndrstndChatModelId =
   // premier
   | 'ministral-3b-latest'
   | 'ministral-8b-latest'
@@ -13,7 +13,7 @@ export type MistralChatModelId =
   | 'open-mixtral-8x22b'
   | (string & {});
 
-export interface MistralChatSettings {
+export interface UndrstndChatSettings {
   /**
 Whether to inject a safety prompt before all conversations.
 

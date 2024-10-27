@@ -4,39 +4,39 @@ import {
   loadApiKey,
   withoutTrailingSlash,
 } from '@ai-sdk/provider-utils';
-import { MistralChatLanguageModel } from './mistral-chat-language-model';
+import { UndrstndChatLanguageModel } from './mistral-chat-language-model';
 import {
-  MistralChatModelId,
-  MistralChatSettings,
+  UndrstndChatModelId,
+  UndrstndChatSettings,
 } from './mistral-chat-settings';
 
-export interface MistralProvider extends ProviderV1 {
+export interface UndrstndProvider extends ProviderV1 {
   (
-    modelId: MistralChatModelId,
-    settings?: MistralChatSettings,
+    modelId: UndrstndChatModelId,
+    settings?: UndrstndChatSettings,
   ): LanguageModelV1;
 
   /**
 Creates a model for text generation.
 */
   languageModel(
-    modelId: MistralChatModelId,
-    settings?: MistralChatSettings,
+    modelId: UndrstndChatModelId,
+    settings?: UndrstndChatSettings,
   ): LanguageModelV1;
 
   /**
 Creates a model for text generation.
 */
   chat(
-    modelId: MistralChatModelId,
-    settings?: MistralChatSettings,
+    modelId: UndrstndChatModelId,
+    settings?: UndrstndChatSettings,
   ): LanguageModelV1;
 }
 
-export interface MistralProviderSettings {
+export interface UndrstndProviderSettings {
   /**
 Use a different URL prefix for API calls, e.g. to use proxy servers.
-The default prefix is `https://api.mistral.ai/v1`.
+The default prefix is `https://api.undrstnd-labs.com/v1`.
    */
   baseURL?: string;
 
@@ -47,7 +47,7 @@ The default prefix is `https://api.mistral.ai/v1`.
 
   /**
 API key that is being send using the `Authorization` header.
-It defaults to the `MISTRAL_API_KEY` environment variable.
+It defaults to the `UNDRSTND_API_KEY` environment variable.
    */
   apiKey?: string;
 
@@ -64,42 +64,42 @@ or to provide a custom fetch implementation for e.g. testing.
 }
 
 /**
-Create a Mistral AI provider instance.
+Create a Undrstnd AI provider instance.
  */
-export function createMistral(
-  options: MistralProviderSettings = {},
-): MistralProvider {
+export function createUndrstnd(
+  options: UndrstndProviderSettings = {},
+): UndrstndProvider {
   const baseURL =
     withoutTrailingSlash(options.baseURL ?? options.baseUrl) ??
-    'https://api.mistral.ai/v1';
+    'https://api.undrstnd-labs.com/v1';
 
   const getHeaders = () => ({
     Authorization: `Bearer ${loadApiKey({
       apiKey: options.apiKey,
-      environmentVariableName: 'MISTRAL_API_KEY',
-      description: 'Mistral',
+      environmentVariableName: 'UNDRSTND_API_KEY',
+      description: 'Undrstnd',
     })}`,
     ...options.headers,
   });
 
   const createChatModel = (
-    modelId: MistralChatModelId,
-    settings: MistralChatSettings = {},
+    modelId: UndrstndChatModelId,
+    settings: UndrstndChatSettings = {},
   ) =>
-    new MistralChatLanguageModel(modelId, settings, {
-      provider: 'mistral.chat',
+    new UndrstndChatLanguageModel(modelId, settings, {
+      provider: 'undrstnd.chat',
       baseURL,
       headers: getHeaders,
       fetch: options.fetch,
     });
 
   const provider = function (
-    modelId: MistralChatModelId,
-    settings?: MistralChatSettings,
+    modelId: UndrstndChatModelId,
+    settings?: UndrstndChatSettings,
   ) {
     if (new.target) {
       throw new Error(
-        'The Mistral  model function cannot be called with the new keyword.',
+        'The Undrstnd model function cannot be called with the new keyword.',
       );
     }
 
@@ -109,10 +109,10 @@ export function createMistral(
   provider.languageModel = createChatModel;
   provider.chat = createChatModel;
 
-  return provider as MistralProvider;
+  return provider as UndrstndProvider;
 }
 
 /**
-Default Mistral provider instance.
+Default Undrstnd provider instance.
  */
-export const mistral = createMistral();
+export const undrstnd = createUndrstnd();

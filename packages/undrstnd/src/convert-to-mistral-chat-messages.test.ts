@@ -1,8 +1,8 @@
-import { convertToMistralChatMessages } from './convert-to-mistral-chat-messages';
+import { convertToUndrstndChatMessages } from './convert-to-mistral-chat-messages';
 
 describe('user messages', () => {
   it('should convert messages with image parts', async () => {
-    const result = convertToMistralChatMessages([
+    const result = convertToUndrstndChatMessages([
       {
         role: 'user',
         content: [
@@ -22,7 +22,7 @@ describe('user messages', () => {
 
 describe('tool calls', () => {
   it('should stringify arguments to tool calls', () => {
-    const result = convertToMistralChatMessages([
+    const result = convertToUndrstndChatMessages([
       {
         role: 'assistant',
         content: [
@@ -53,7 +53,7 @@ describe('tool calls', () => {
 
 describe('assistant messages', () => {
   it('should add prefix true to trailing assistant messages', () => {
-    const result = convertToMistralChatMessages([
+    const result = convertToUndrstndChatMessages([
       {
         role: 'user',
         content: [{ type: 'text', text: 'Hello' }],

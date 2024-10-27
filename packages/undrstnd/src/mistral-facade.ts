@@ -1,17 +1,17 @@
 import { loadApiKey, withoutTrailingSlash } from '@ai-sdk/provider-utils';
-import { MistralChatLanguageModel } from './mistral-chat-language-model';
+import { UndrstndChatLanguageModel } from './mistral-chat-language-model';
 import {
-  MistralChatModelId,
-  MistralChatSettings,
+  UndrstndChatModelId,
+  UndrstndChatSettings,
 } from './mistral-chat-settings';
-import { MistralProviderSettings } from './mistral-provider';
+import { UndrstndProviderSettings } from './undrstnd-provider';
 
 /**
- * @deprecated Use `createMistral` instead.
+ * @deprecated Use `createUndrstnd` instead.
  */
-export class Mistral {
+export class Undrstnd {
   /**
-   * Base URL for the Mistral API calls.
+   * Base URL for the Undrstnd API calls.
    */
   readonly baseURL: string;
 
@@ -20,9 +20,9 @@ export class Mistral {
   readonly headers?: Record<string, string>;
 
   /**
-   * Creates a new Mistral provider instance.
+   * Creates a new Undrstnd provider instance.
    */
-  constructor(options: MistralProviderSettings = {}) {
+  constructor(options: UndrstndProviderSettings = {}) {
     this.baseURL =
       withoutTrailingSlash(options.baseURL ?? options.baseUrl) ??
       'https://api.mistral.ai/v1';
@@ -38,15 +38,15 @@ export class Mistral {
         Authorization: `Bearer ${loadApiKey({
           apiKey: this.apiKey,
           environmentVariableName: 'MISTRAL_API_KEY',
-          description: 'Mistral',
+          description: 'Undrstnd',
         })}`,
         ...this.headers,
       }),
     };
   }
 
-  chat(modelId: MistralChatModelId, settings: MistralChatSettings = {}) {
-    return new MistralChatLanguageModel(modelId, settings, {
+  chat(modelId: UndrstndChatModelId, settings: UndrstndChatSettings = {}) {
+    return new UndrstndChatLanguageModel(modelId, settings, {
       provider: 'mistral.chat',
       ...this.baseConfig,
     });

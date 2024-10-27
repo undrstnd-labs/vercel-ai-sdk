@@ -13,37 +13,37 @@ import {
   postJsonToApi,
 } from '@ai-sdk/provider-utils';
 import { z } from 'zod';
-import { convertToMistralChatMessages } from './convert-to-mistral-chat-messages';
-import { mapMistralFinishReason } from './map-mistral-finish-reason';
+import { convertToUndrstndChatMessages } from './convert-to-mistral-chat-messages';
+import { mapUndrstndFinishReason } from './map-mistral-finish-reason';
 import {
-  MistralChatModelId,
-  MistralChatSettings,
+  UndrstndChatModelId,
+  UndrstndChatSettings,
 } from './mistral-chat-settings';
 import { mistralFailedResponseHandler } from './mistral-error';
 import { getResponseMetadata } from './get-response-metadata';
 import { prepareTools } from './mistral-prepare-tools';
 
-type MistralChatConfig = {
+type UndrstndChatConfig = {
   provider: string;
   baseURL: string;
   headers: () => Record<string, string | undefined>;
   fetch?: FetchFunction;
 };
 
-export class MistralChatLanguageModel implements LanguageModelV1 {
+export class UndrstndChatLanguageModel implements LanguageModelV1 {
   readonly specificationVersion = 'v1';
   readonly defaultObjectGenerationMode = 'json';
   readonly supportsImageUrls = false;
 
-  readonly modelId: MistralChatModelId;
-  readonly settings: MistralChatSettings;
+  readonly modelId: UndrstndChatModelId;
+  readonly settings: UndrstndChatSettings;
 
-  private readonly config: MistralChatConfig;
+  private readonly config: UndrstndChatConfig;
 
   constructor(
-    modelId: MistralChatModelId,
-    settings: MistralChatSettings,
-    config: MistralChatConfig,
+    modelId: UndrstndChatModelId,
+    settings: UndrstndChatSettings,
+    config: UndrstndChatConfig,
   ) {
     this.modelId = modelId;
     this.settings = settings;
@@ -129,7 +129,7 @@ export class MistralChatLanguageModel implements LanguageModelV1 {
         responseFormat?.type === 'json' ? { type: 'json_object' } : undefined,
 
       // messages:
-      messages: convertToMistralChatMessages(prompt),
+      messages: convertToUndrstndChatMessages(prompt),
     };
 
     switch (type) {
@@ -210,7 +210,7 @@ export class MistralChatLanguageModel implements LanguageModelV1 {
         toolName: toolCall.function.name,
         args: toolCall.function.arguments!,
       })),
-      finishReason: mapMistralFinishReason(choice.finish_reason),
+      finishReason: mapUndrstndFinishReason(choice.finish_reason),
       usage: {
         promptTokens: response.usage.prompt_tokens,
         completionTokens: response.usage.completion_tokens,
@@ -285,7 +285,7 @@ export class MistralChatLanguageModel implements LanguageModelV1 {
             const choice = value.choices[0];
 
             if (choice?.finish_reason != null) {
-              finishReason = mapMistralFinishReason(choice.finish_reason);
+              finishReason = mapUndrstndFinishReason(choice.finish_reason);
             }
 
             if (choice?.delta == null) {
@@ -304,7 +304,7 @@ export class MistralChatLanguageModel implements LanguageModelV1 {
                 lastMessage.role === 'assistant' &&
                 delta.content === lastMessage.content.trimEnd()
               ) {
-                // Mistral moves the trailing space from the prefix to the next chunk.
+                // Undrstnd moves the trailing space from the prefix to the next chunk.
                 // We trim the leading space to avoid duplication.
                 if (delta.content.length < lastMessage.content.length) {
                   trimLeadingSpace = true;

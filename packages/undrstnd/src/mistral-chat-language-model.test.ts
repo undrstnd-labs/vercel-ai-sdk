@@ -4,13 +4,13 @@ import {
   StreamingTestServer,
   convertReadableStreamToArray,
 } from '@ai-sdk/provider-utils/test';
-import { createMistral } from './mistral-provider';
+import { createUndrstnd } from './undrstnd-provider';
 
 const TEST_PROMPT: LanguageModelV1Prompt = [
   { role: 'user', content: [{ type: 'text', text: 'Hello' }] },
 ];
 
-const provider = createMistral({ apiKey: 'test-api-key' });
+const provider = createUndrstnd({ apiKey: 'test-api-key' });
 const model = provider.chat('mistral-small-latest');
 
 describe('doGenerate', () => {
@@ -266,7 +266,7 @@ describe('doGenerate', () => {
   it('should pass headers', async () => {
     prepareJsonResponse({ content: '' });
 
-    const provider = createMistral({
+    const provider = createUndrstnd({
       apiKey: 'test-api-key',
       headers: {
         'Custom-Provider-Header': 'provider-header-value',
@@ -408,7 +408,7 @@ describe('doStream', () => {
       'data: [DONE]\n\n',
     ];
 
-    const { stream } = await createMistral({
+    const { stream } = await createUndrstnd({
       apiKey: 'test-api-key',
     })
       .chat('mistral-large-latest')
@@ -506,7 +506,7 @@ describe('doStream', () => {
   it('should pass headers', async () => {
     prepareStreamResponse({ content: [] });
 
-    const provider = createMistral({
+    const provider = createUndrstnd({
       apiKey: 'test-api-key',
       headers: {
         'Custom-Provider-Header': 'provider-header-value',

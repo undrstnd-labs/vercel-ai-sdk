@@ -3,12 +3,12 @@ import {
   UnsupportedFunctionalityError,
 } from '@ai-sdk/provider';
 import { convertUint8ArrayToBase64 } from '@ai-sdk/provider-utils';
-import { MistralPrompt } from './mistral-chat-prompt';
+import { UndrstndPrompt } from './mistral-chat-prompt';
 
-export function convertToMistralChatMessages(
+export function convertToUndrstndChatMessages(
   prompt: LanguageModelV1Prompt,
-): MistralPrompt {
-  const messages: MistralPrompt = [];
+): UndrstndPrompt {
+  const messages: UndrstndPrompt = [];
 
   for (let i = 0; i < prompt.length; i++) {
     const { role, content } = prompt[i];

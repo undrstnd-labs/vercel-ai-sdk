@@ -1,6 +1,6 @@
 import { LanguageModelV1FinishReason } from '@ai-sdk/provider';
 
-export function mapMistralFinishReason(
+export function mapUndrstndFinishReason(
   finishReason: string | null | undefined,
 ): LanguageModelV1FinishReason {
   switch (finishReason) {

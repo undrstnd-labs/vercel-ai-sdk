@@ -1,6 +1,6 @@
 export * from './mistral-facade';
-export { createMistral, mistral } from './mistral-provider';
+export { createUndrstnd, undrstnd } from './undrstnd-provider';
 export type {
-  MistralProvider,
-  MistralProviderSettings,
-} from './mistral-provider';
+  UndrstndProvider,
+  UndrstndProviderSettings,
+} from './undrstnd-provider';

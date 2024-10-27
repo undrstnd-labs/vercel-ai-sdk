@@ -9,7 +9,7 @@ const mistralErrorDataSchema = z.object({
   code: z.string().nullable(),
 });
 
-export type MistralErrorData = z.infer<typeof mistralErrorDataSchema>;
+export type UndrstndErrorData = z.infer<typeof mistralErrorDataSchema>;
 
 export const mistralFailedResponseHandler = createJsonErrorResponseHandler({
   errorSchema: mistralErrorDataSchema,
